@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipit Design</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 200vh; /* Make the page scrollable */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #228b22; /* Initial forest green background */
+            color: white; /* White text */
+            font-family: Arial, sans-serif; /* Clean, sans-serif font */
+            font-size: 4rem; /* Large text size */
+            font-weight: bold; /* Bold text */
+            position: relative; /* Enable positioning for buttons */
+            overflow: hidden;
+        }
+
+        #text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease, font-size 0.3s ease;
+        }
+
+        .button {
+            position: fixed; /* Ensure buttons stay fixed */
+            top: 50%;
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border: none;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+        }
+
+        .right-button {
+            right: 20px;
+            transform: translateY(-50%);
+        }
+
+        .left-button {
+            left: 20px;
+            transform: translateY(-50%);
+        }
+
+        .arrow {
+            border: solid black;
+            border-width: 0 4px 4px 0;
+            display: inline-block;
+            padding: 10px;
+        }
+
+        .arrow-right {
+            transform: rotate(-45deg);
+        }
+
+        .arrow-left {
+            transform: rotate(135deg);
+        }
+    </style>
+</head>
+<body>
+    <div id="text">Pipit</div>
+    <button class="button right-button" id="toBlue">
+        <i class="arrow arrow-right"></i>
+    </button>
+    <button class="button left-button" id="toGreen" style="display: none;">
+        <i class="arrow arrow-left"></i>
+    </button>
+
+    <script>
+        const body = document.body;
+        const text = document.getElementById('text');
+        const toBlueButton = document.getElementById('toBlue');
+        const toGreenButton = document.getElementById('toGreen');
+
+        let currentColor = 'green';
+
+        const switchToBlue = () => {
+            currentColor = 'blue';
+            body.style.backgroundColor = '#1e3a8a'; /* Blue background */
+            toBlueButton.style.display = 'none';
+            toGreenButton.style.display = 'block';
+        };
+
+        const switchToGreen = () => {
+            currentColor = 'green';
+            body.style.backgroundColor = '#228b22'; /* Forest green background */
+            toGreenButton.style.display = 'none';
+            toBlueButton.style.display = 'block';
+        };
+
+        toBlueButton.addEventListener('click', switchToBlue);
+        toGreenButton.addEventListener('click', switchToGreen);
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const maxLightness = 90;
+            const baseLightness = 14;
+            const adjustedLightness = Math.min(maxLightness, baseLightness + scrollY / 10); // Adjust lightness based on scroll
+
+            if (currentColor === 'blue') {
+                body.style.backgroundColor = `hsl(220, 60%, ${adjustedLightness}%)`;
+            } else if (currentColor === 'green') {
+                body.style.backgroundColor = `hsl(120, 60%, ${adjustedLightness}%)`;
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                switchToBlue();
+            } else if (e.key === 'ArrowLeft') {
+                switchToGreen();
+            }
+        });
+
+        // Ensure buttons stay accessible and centered while scrolling
+        window.addEventListener('resize', () => {
+            toBlueButton.style.top = `${window.innerHeight / 2}px`;
+            toGreenButton.style.top = `${window.innerHeight / 2}px`;
+        });
+    </script>
+</body>
+</html>
